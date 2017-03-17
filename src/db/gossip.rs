@@ -1,4 +1,5 @@
 
-struct GossipState {
+
+struct Gossip {
     
 }
