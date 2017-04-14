@@ -1,4 +1,21 @@
 [root]
 name = "tomahawk"
 version = "0.1.0"
+dependencies = [
+ "futures 0.1.13 (registry+https://github.com/rust-lang/crates.io-index)",
+ "tokio 0.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
+]
 
+[[package]]
+name = "futures"
+version = "0.1.13"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "tokio"
+version = "0.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[metadata]
+"checksum futures 0.1.13 (registry+https://github.com/rust-lang/crates.io-index)" = "55f0008e13fc853f79ea8fc86e931486860d4c4c156cdffb59fa5f7fa833660a"
+"checksum tokio 0.0.0 (registry+https://github.com/rust-lang/crates.io-index)" = "ad008a2129866117d3b0424c047f1302f3d8974ff58c6ade59ec14cd6c59fee2"

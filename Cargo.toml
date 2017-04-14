@@ -4,3 +4,5 @@ version = "0.1.0"
 authors = ["Jon Haddad <jon@jonhaddad.com>"]
 
 [dependencies]
+tokio = "*"
+futures = "0.1"
