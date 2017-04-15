@@ -6,6 +6,7 @@ use std::thread;
 use std::thread::JoinHandle;
 use std::sync::mpsc;
 use std::io;
+use std::io::Cursor; // used with byteorder
 
 // TOKIO
 use futures::{future, Future, BoxFuture};
@@ -15,6 +16,8 @@ use tokio_proto::TcpServer;
 
 // Serialization
 use bincode::{serialize, deserialize, Infinite};
+use byteorder::{BigEndian, WriteBytesExt, ReadBytesExt};
+
 
 // My stuff
 use super::state::State;
@@ -28,16 +31,26 @@ impl Codec for GossipCodec {
     type Out = Message;
 
     fn decode(&mut self, buf: &mut EasyBuf) -> Result<Option<Self::In>, io::Error> {
-        Ok(None)
+        // read the length
+        // read the data, get a message
+        let mut tmp = Cursor::new(buf.drain_to(4));
+        let lenth = tmp.read_u32::<BigEndian>()?;
+        let data = buf.drain_to(lenth as usize);
+        let message = deserialize::<Message>(data.as_slice()).
+            map_err(|x| io::Error::new(io::ErrorKind::Other, "Could not deserialize"))?;
+        Ok(Some(message))
     }
 
     fn encode(&mut self, item: Self::Out, into: &mut Vec<u8>) -> io::Result<()> {
         // serialize the Message
         // write the length to the vector and then the data
-        let data = serialize(&item, Infinite).map_err(|x| io::Error::new(io::ErrorKind::Other, "could not serialize") )?;
+        let mut data = serialize(&item, Infinite).
+            map_err(|x| io::Error::new(io::ErrorKind::Other, "could not serialize") )?;
+        let mut len = data.len() as u32;
+        into.write_u32::<BigEndian>(len);
+        into.append(&mut data);
         Ok(())
     }
-
 }
 
 
@@ -48,7 +61,6 @@ pub enum Message {
     Pong,
     Shutdown,
     AddNode(String),
-
 }
 
 /*
@@ -66,13 +78,11 @@ impl GossipManager {
     spawns a new thread
     */
     pub fn new() -> GossipManager {
-        GossipManager {
-            nodes:HashMap::new()
-        }
+        GossipManager { nodes: HashMap::new() }
     }
 
     pub fn get_channel(&self) -> GossipChannel {
-        GossipChannel{}
+        GossipChannel {}
     }
 }
 
@@ -83,7 +93,4 @@ impl GossipManager {
 //}
 
 
-pub struct GossipChannel {
-
-}
-
+pub struct GossipChannel {}

@@ -8,11 +8,7 @@ fn start_and_stop_gossip() {
 }
 
 #[test]
-fn ping_pong_channel() {
-
-}
+fn ping_pong_channel() {}
 
 #[test]
-fn add_node() {
-
-}
+fn add_node() {}

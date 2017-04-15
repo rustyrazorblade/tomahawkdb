@@ -10,6 +10,8 @@ extern crate tokio_service;
 extern crate serde_derive;
 extern crate bincode;
 
+extern crate byteorder;
+
 mod db;
 
 use db::tomahawk_server::TomahawkServer;

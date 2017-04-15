@@ -10,8 +10,9 @@ pub struct TomahawkServer {
 
 impl TomahawkServer {
     pub fn new() -> TomahawkServer {
-        TomahawkServer{
-            database:Database::new(),
-            nodes: HashMap::new() }
+        TomahawkServer {
+            database: Database::new(),
+            nodes: HashMap::new(),
+        }
     }
 }

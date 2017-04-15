@@ -14,5 +14,4 @@ pub struct Node {
     address: Ipv4Addr,
     state: NodeState,
     streaming_state: StreamingState,
-
 }

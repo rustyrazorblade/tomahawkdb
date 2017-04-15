@@ -5,9 +5,7 @@ pub struct ClusterState {
     nodes: HashMap<String, State>,
 }
 
-impl ClusterState {
-
-}
+impl ClusterState {}
 
 // keeps the state of each node
 // it will even track itself!
@@ -16,4 +14,4 @@ pub struct State {
     values: HashMap<String, String>,
 }
 
-static UP : &'static str = "UP";
+static UP: &'static str = "UP";

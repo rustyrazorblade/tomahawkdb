@@ -11,6 +11,6 @@ pub struct Database {
 
 impl Database {
     pub fn new() -> Database {
-        Database{data: HashMap::new()}
+        Database { data: HashMap::new() }
     }
 }
