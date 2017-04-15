@@ -1,10 +1,14 @@
-use super::gossip::GossipManager;
+//use super::GossipManager;
+
+/*
+lets be sure the cluster manager works
+
+*/
 
 
 #[test]
 fn start_and_stop_gossip() {
-    let mut g = GossipManager::new();
-    let chan = g.get_channel();
+//    let mut g = GossipManager::new();
 }
 
 #[test]
@@ -12,3 +16,5 @@ fn ping_pong_channel() {}
 
 #[test]
 fn add_node() {}
+
+

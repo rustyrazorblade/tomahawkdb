@@ -23,7 +23,7 @@ use byteorder::{BigEndian, WriteBytesExt, ReadBytesExt};
 
 
 // My stuff
-use super::state::State;
+//use super::state::State;
 
 #[derive(Default)]
 pub struct GossipCodec;
@@ -76,7 +76,8 @@ impl<T: AsyncRead + AsyncWrite + 'static> ServerProto<T> for GossipProto {
     }
 }
 
-pub struct GossipService;
+pub struct GossipService {
+}
 
 impl Service for GossipService {
     type Error = io::Error;
@@ -102,34 +103,4 @@ pub enum Message {
     AddNode(String),
 }
 
-/*
-runs the network gossip server and maintains the state of the nodes
-should spin off its own thread which uses channels
-the instance
-*/
-pub struct GossipManager {
-    nodes: HashMap<String, State>,
-}
 
-impl GossipManager {
-    /*
-    starts the server
-    spawns a new thread
-    */
-    pub fn new() -> GossipManager {
-        GossipManager { nodes: HashMap::new() }
-    }
-
-    pub fn get_channel(&self) -> GossipChannel {
-        GossipChannel {}
-    }
-}
-
-//impl Drop for GossipManager {
-//    fn drop(&mut self) {
-//        self.shutdown();
-//    }
-//}
-
-
-pub struct GossipChannel {}

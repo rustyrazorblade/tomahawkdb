@@ -1,17 +1,14 @@
 use std::collections::HashMap;
 
-
-pub struct ClusterState {
-    nodes: HashMap<String, State>,
+pub struct NodeState {
+    is_up: bool,
+    last_update: u64,
 }
 
-impl ClusterState {}
-
-// keeps the state of each node
-// it will even track itself!
-pub struct State {
-    // sockets
-    values: HashMap<String, String>,
+impl NodeState {
+    fn new() -> NodeState {
+        NodeState{is_up: false,
+            last_update: 0}
+    }
 }
 
-static UP: &'static str = "UP";
