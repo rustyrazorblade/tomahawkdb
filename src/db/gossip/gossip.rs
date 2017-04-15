@@ -7,12 +7,14 @@ use std::thread::JoinHandle;
 use std::sync::mpsc;
 use std::io;
 use std::io::Cursor; // used with byteorder
+use bytes::{BytesMut, BufMut}; // needed for tokio
 
 // TOKIO
 use futures::{future, Future, BoxFuture};
 use tokio_proto::pipeline::ServerProto;
-use tokio_core::io::{Io, Codec, Framed, EasyBuf};
+use tokio_io::codec::{Decoder, Encoder, Framed};
 use tokio_proto::TcpServer;
+use tokio_io::{AsyncRead, AsyncWrite};
 
 // Serialization
 use bincode::{serialize, deserialize, Infinite};
@@ -26,32 +28,53 @@ use super::state::State;
 pub struct GossipCodec;
 
 // Lets us work with the Message enum at the higher level.
-impl Codec for GossipCodec {
-    type In = Message;
-    type Out = Message;
+impl Decoder for GossipCodec {
+    type Item = Message;
+    type Error = io::Error;
 
-    fn decode(&mut self, buf: &mut EasyBuf) -> Result<Option<Self::In>, io::Error> {
+    fn decode(&mut self, buf: &mut BytesMut) -> Result<Option<Self::Item>, io::Error> {
         // read the length
         // read the data, get a message
         let mut tmp = Cursor::new(buf.drain_to(4));
         let lenth = tmp.read_u32::<BigEndian>()?;
         let data = buf.drain_to(lenth as usize);
-        let message = deserialize::<Message>(data.as_slice()).
+        let message = deserialize::<Message>(&*data).
             map_err(|x| io::Error::new(io::ErrorKind::Other, "Could not deserialize"))?;
         Ok(Some(message))
     }
+}
 
-    fn encode(&mut self, item: Self::Out, into: &mut Vec<u8>) -> io::Result<()> {
+impl Encoder for GossipCodec {
+    type Item = Message;
+    type Error = io::Error;
+
+    fn encode(&mut self, item: Self::Item, into: &mut BytesMut) -> io::Result<()> {
         // serialize the Message
         // write the length to the vector and then the data
         let mut data = serialize(&item, Infinite).
-            map_err(|x| io::Error::new(io::ErrorKind::Other, "could not serialize") )?;
+        map_err(|x| io::Error::new(io::ErrorKind::Other, "could not serialize") )?;
         let mut len = data.len() as u32;
-        into.write_u32::<BigEndian>(len);
-        into.append(&mut data);
+        into.put_u32::<BigEndian>(len);
+        into.put_slice(&mut data);
         Ok(())
     }
 }
+
+
+#[derive(Debug)]
+pub struct GossipProto;
+
+impl<T: AsyncRead + AsyncWrite + 'static> ServerProto<T> for GossipProto {
+    type Request = Message;
+    type Response = Message;
+    type Transport = Framed<T, GossipCodec>;
+    type BindTransport = Result<Self::Transport, io::Error>;
+
+    fn bind_transport(&self, io: T) -> Self::BindTransport {
+        Ok(io.framed(GossipCodec))
+    }
+}
+
 
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
