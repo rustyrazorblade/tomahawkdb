@@ -15,6 +15,7 @@ use tokio_proto::pipeline::ServerProto;
 use tokio_io::codec::{Decoder, Encoder, Framed};
 use tokio_proto::TcpServer;
 use tokio_io::{AsyncRead, AsyncWrite};
+use tokio_service::Service;
 
 // Serialization
 use bincode::{serialize, deserialize, Infinite};
@@ -75,7 +76,19 @@ impl<T: AsyncRead + AsyncWrite + 'static> ServerProto<T> for GossipProto {
     }
 }
 
+pub struct GossipService;
 
+impl Service for GossipService {
+    type Error = io::Error;
+    type Future = BoxFuture<Self::Response, Self::Error>;
+    type Request = Message;
+    type Response = Message;
+
+    fn call(&self, req: Self::Request) -> Self::Future {
+        unimplemented!()
+    }
+
+}
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub enum Message {
