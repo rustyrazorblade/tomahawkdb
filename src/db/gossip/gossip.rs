@@ -5,12 +5,34 @@ use std::collections::HashMap;
 use std::thread;
 use std::thread::JoinHandle;
 use std::sync::mpsc;
+use std::io;
 
 use futures::{future, Future, BoxFuture};
+use tokio_proto::pipeline::ServerProto;
+use tokio_core::io::{Io, Codec, Framed, EasyBuf};
+use tokio_proto::TcpServer;
 
 use super::state::State;
 
-enum Message {
+#[derive(Default)]
+pub struct GossipCodec;
+
+impl Codec for GossipCodec {
+    type In = Message;
+    type Out = Message;
+
+    fn decode(&mut self, buf: &mut EasyBuf) -> Result<Option<Self::In>, io::Error> {
+        Ok(None)
+    }
+    fn encode(&mut self, item: Self::Out, into: &mut Vec<u8>) -> io::Result<()> {
+        Ok(())
+    }
+
+}
+
+
+
+pub enum Message {
     // address
     Ping,
     Pong,
