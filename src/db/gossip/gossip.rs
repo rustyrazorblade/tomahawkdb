@@ -92,10 +92,13 @@ impl Service for GossipService {
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub enum Message {
-    // address
+    // testing only
     Ping,
     Pong,
+    // normal response
+    ReceivedOK,
     Shutdown,
+    // address
     AddNode(String),
 }
 
