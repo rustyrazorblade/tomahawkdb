@@ -6,3 +6,9 @@ authors = ["Jon Haddad <jon@jonhaddad.com>"]
 [dependencies]
 tokio = "*"
 futures = "0.1"
+log = "0.3"
+env_logger = "0.3"
+tokio-core = "*"
+tokio-proto = "*"
+tokio-io = "*"
+tokio-service = "*"

@@ -1,6 +1,10 @@
 extern crate futures;
-//extern crate tokio_core;
-//extern crate tokio_io;
+
+extern crate tokio_core;
+extern crate tokio_io;
+extern crate tokio_proto;
+extern crate tokio_service;
+
 
 use std::sync::{Mutex, Arc};
 use std::collections::HashMap;
@@ -15,6 +19,11 @@ use std::sync::mpsc;
 use super::state::State;
 
 enum Message {
+    // address
+    Ping,
+    Pong,
+    Shutdown,
+    AddNode(String),
 
 }
 
@@ -23,38 +32,18 @@ runs the network gossip server and maintains the state of the nodes
 should spin off its own thread which uses channels
 the instance
 */
-pub struct GossipServer {
+pub struct GossipManager {
     nodes: HashMap<String, State>,
-    process: Option<JoinHandle<()>>,
-    // in and out channels
 }
 
-impl GossipServer {
-    pub fn new() -> GossipServer {
-        GossipServer{nodes:HashMap::new(),
-            process: None}
-    }
-
-    pub fn start(&mut self) {
-        let (tx, rx) = mpsc::channel::<Message>();
-        // start it on its own thread
-        let process = thread::spawn(|| {
-
-        });
-        self.process = Some(process);
-    }
-    pub fn shutdown(&mut self) {
-
-    }
-
-    pub fn run() {
-
-    }
-
-    pub fn is_running(&self) -> bool {
-        match self.process {
-            Some(_) => true,
-            None => false
+impl GossipManager {
+    /*
+    starts the server
+    spawns a new thread
+    */
+    pub fn new() -> GossipManager {
+        GossipManager {
+            nodes:HashMap::new()
         }
     }
 
@@ -62,6 +51,12 @@ impl GossipServer {
         GossipChannel{}
     }
 }
+
+//impl Drop for GossipManager {
+//    fn drop(&mut self) {
+//        self.shutdown();
+//    }
+//}
 
 
 pub struct GossipChannel {

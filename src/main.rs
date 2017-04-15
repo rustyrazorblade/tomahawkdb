@@ -1,3 +1,6 @@
+#[macro_use]
+extern crate log;
+
 mod db;
 
 use db::tomahawk_server::TomahawkServer;

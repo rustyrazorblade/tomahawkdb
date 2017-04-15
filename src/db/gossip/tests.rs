@@ -1,16 +1,18 @@
-use super::gossip::GossipServer;
+use super::gossip::GossipManager;
 
 
 #[test]
 fn start_and_stop_gossip() {
-    let mut g = GossipServer::new();
-    g.start();
-    assert!(g.is_running());
+    let mut g = GossipManager::new();
     let chan = g.get_channel();
-    g.shutdown();
 }
 
 #[test]
-fn add_server() {
+fn ping_pong_channel() {
+
+}
+
+#[test]
+fn add_node() {
 
 }
