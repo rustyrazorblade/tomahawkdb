@@ -1,9 +1,3 @@
-extern crate futures;
-
-extern crate tokio_core;
-extern crate tokio_io;
-extern crate tokio_proto;
-extern crate tokio_service;
 
 
 use std::sync::{Mutex, Arc};
@@ -11,10 +5,8 @@ use std::collections::HashMap;
 use std::thread;
 use std::thread::JoinHandle;
 use std::sync::mpsc;
-//
-//use futures::{Future, Stream};
-//use tokio_io::{io, AsyncRead};
-//use tokio_core::net::TcpListener;
+
+use futures::{future, Future, BoxFuture};
 
 use super::state::State;
 
