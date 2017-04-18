@@ -1,5 +1,5 @@
 //use super::GossipManager;
-
+use super::ClusterState;
 /*
 lets be sure the cluster manager works
 

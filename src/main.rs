@@ -12,6 +12,8 @@ extern crate bincode;
 extern crate byteorder;
 extern crate bytes;
 
+extern crate uuid;
+
 mod db;
 
 use db::tomahawk_server::TomahawkServer;

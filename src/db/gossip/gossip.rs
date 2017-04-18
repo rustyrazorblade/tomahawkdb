@@ -23,7 +23,7 @@ use byteorder::{BigEndian, WriteBytesExt, ReadBytesExt};
 
 
 // My stuff
-//use super::state::State;
+use super::state::ClusterState;
 
 #[derive(Default)]
 pub struct GossipCodec;
@@ -100,7 +100,7 @@ pub enum Message {
     ReceivedOK,
     Shutdown,
     // address
-    AddNode(String),
+    GossipMessage(ClusterState),
 }
 
 
