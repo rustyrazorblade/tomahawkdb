@@ -3,16 +3,32 @@ use std::collections::HashMap;
 use uuid::Uuid;
 use bincode::{serialize, deserialize, Infinite};
 
+
+
+#[derive(Debug, PartialEq, Serialize, Deserialize, Hash, Eq, PartialOrd)]
+enum ApplicationState {
+    Status,
+    Load,
+    Schema,
+    Datacenter,
+    Rack,
+    Version,
+    InternalIp,
+    HostId,
+}
+
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct NodeState {
     is_up: bool,
-    last_update: u64,
+    version: u64,
+    state: HashMap<ApplicationState, String>,
 }
 
 impl NodeState {
     fn new() -> NodeState {
         NodeState{is_up: false,
-            last_update: 0}
+            version: 0,
+            state: HashMap::new()}
     }
 }
 
