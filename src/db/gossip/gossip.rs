@@ -8,14 +8,17 @@ use std::sync::mpsc;
 use std::io;
 use std::io::Cursor; // used with byteorder
 use bytes::{BytesMut, BufMut}; // needed for tokio
+use std::sync::RwLock;
+
 
 // TOKIO
-use futures::{future, Future, BoxFuture};
+use futures::{future, Future, BoxFuture, finished};
 use tokio_proto::pipeline::ServerProto;
 use tokio_io::codec::{Decoder, Encoder, Framed};
 use tokio_proto::TcpServer;
 use tokio_io::{AsyncRead, AsyncWrite};
 use tokio_service::Service;
+
 
 // Serialization
 use bincode::{serialize, deserialize, Infinite};
@@ -77,6 +80,7 @@ impl<T: AsyncRead + AsyncWrite + 'static> ServerProto<T> for GossipProto {
 }
 
 pub struct GossipService {
+    state: RwLock<ClusterState>,
 }
 
 impl Service for GossipService {
@@ -86,7 +90,8 @@ impl Service for GossipService {
     type Response = Message;
 
     fn call(&self, req: Self::Request) -> Self::Future {
-        unimplemented!()
+        let tmp = self.state.write().unwrap();
+        finished(Message::ReceivedOK).boxed()
     }
 
 }
