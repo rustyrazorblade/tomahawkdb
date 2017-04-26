@@ -2,6 +2,7 @@ use super::{GossipError, GossipResult};
 use std::collections::HashMap;
 use uuid::Uuid;
 use bincode::{serialize, deserialize, Infinite};
+use std::cmp::{PartialOrd, Ordering};
 
 
 
@@ -18,16 +19,27 @@ enum ApplicationState {
 }
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
+struct VersionedValue {
+    version: i64,
+    value: String,
+}
+
+impl PartialOrd for VersionedValue {
+    fn partial_cmp(&self, other: &VersionedValue) -> Option<Ordering> {
+        self.version.partial_cmp(&other.version)
+    }
+
+}
+
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct NodeState {
     is_up: bool,
-    version: u64,
-    state: HashMap<ApplicationState, String>,
+    state: HashMap<ApplicationState, VersionedValue>,
 }
 
 impl NodeState {
     fn new() -> NodeState {
         NodeState{is_up: false,
-            version: 0,
             state: HashMap::new()}
     }
 }
