@@ -17,4 +17,4 @@ serde_derive = "0.9"
 bincode = "*"
 byteorder = "1.0.0"
 bytes = "0.4"
-uuid = "0.4"
+uuid = { version = "0.4", features = ["serde", "v4"] }

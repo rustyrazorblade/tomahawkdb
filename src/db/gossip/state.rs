@@ -1,9 +1,9 @@
 use super::{GossipError, GossipResult};
 use std::collections::HashMap;
-use uuid::Uuid;
+use uuid::{Uuid, UuidVersion};
 use bincode::{serialize, deserialize, Infinite};
 use std::cmp::{PartialOrd, Ordering};
-
+use std::net::Ipv4Addr;
 
 
 #[derive(Debug, PartialEq, Serialize, Deserialize, Hash, Eq, PartialOrd)]
@@ -34,26 +34,36 @@ impl PartialOrd for VersionedValue {
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct NodeState {
     is_up: bool,
+    id: Uuid,
+    address: Ipv4Addr,
+    port: usize,
     state: HashMap<ApplicationState, VersionedValue>,
 }
 
 impl NodeState {
-    fn new() -> NodeState {
+    fn new(ip: Ipv4Addr, port: usize) -> NodeState {
+        let id = Uuid::new_v4();
+
         NodeState{is_up: false,
-            state: HashMap::new()}
+            id: id,
+            address: ip,
+            port: port,
+            state: HashMap::new()
+            }
     }
 }
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClusterState {
-    nodes: HashMap<String, NodeState>,
+    nodes: Vec<NodeState>,
 }
 
 impl ClusterState {
     fn new() -> ClusterState {
-        ClusterState{nodes:HashMap::new()}
+        ClusterState{nodes:Vec::new()}
     }
     fn update(&mut self, node: Uuid, state: NodeState) -> GossipResult<()> {
         Err(GossipError::OldState)
     }
+
 }
