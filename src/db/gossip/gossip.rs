@@ -10,7 +10,7 @@ use std::io::Cursor; // used with byteorder
 use bytes::{BytesMut, BufMut}; // needed for tokio
 use std::sync::RwLock;
 use std::net::SocketAddr;
-
+use uuid::Uuid;
 // TOKIO
 use futures::{future, Future, BoxFuture, finished};
 use tokio_proto::pipeline::ServerProto;
@@ -109,8 +109,8 @@ impl Service for GossipService {
     type Response = Message;
 
     fn call(&self, req: Self::Request) -> Self::Future {
-        let tmp = self.state.write().unwrap();
-
+        let mut tmp = self.state.write().unwrap();
+        let response = tmp.handle(req);
         finished(Message::ReceivedOK).boxed()
     }
 
@@ -122,6 +122,8 @@ pub enum Message {
     Ping,
     Pong,
     // normal response
+    // server has its own UUID, ip & port
+    Join(Uuid, String, usize),
     ReceivedOK,
     Shutdown,
     // address

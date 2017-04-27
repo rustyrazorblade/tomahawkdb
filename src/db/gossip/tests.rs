@@ -1,6 +1,6 @@
 //use super::GossipManager;
-use super::ClusterState;
-use super::GossipService;
+use uuid::Uuid;
+use super::{GossipService, ClusterState, Message};
 /*
 lets be sure the cluster manager works
 
@@ -13,11 +13,19 @@ fn start_and_stop_gossip() {
 }
 
 #[test]
-fn ping_pong_channel() {}
+fn ping_pong_channel() {
+    GossipService::new_async(48475);
+}
 
 #[test]
 fn add_node() {
-    GossipService::new_async(48475);
+    let mut state = ClusterState::new();
+    let msg = Message::Join(Uuid::new_v4(),
+                            String::from("127.0.0.1"),
+                            8375);
+    let result = state.handle(msg);
 }
+
+
 
 

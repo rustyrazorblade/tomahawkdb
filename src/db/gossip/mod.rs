@@ -2,8 +2,8 @@ pub mod gossip;
 pub mod messages;
 pub mod state;
 
-use self::state::{ClusterState, NodeState};
-pub use self::gossip::GossipService;
+pub use self::state::{ClusterState, NodeState};
+pub use self::gossip::{GossipService, Message};
 
 mod tests;
 

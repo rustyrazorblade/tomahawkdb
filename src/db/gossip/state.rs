@@ -1,10 +1,10 @@
 use super::{GossipError, GossipResult};
 use std::collections::HashMap;
-use uuid::{Uuid, UuidVersion};
+use uuid::Uuid;
 use bincode::{serialize, deserialize, Infinite};
 use std::cmp::{PartialOrd, Ordering};
 use std::net::Ipv4Addr;
-
+use super::gossip::Message;
 
 #[derive(Debug, PartialEq, Serialize, Deserialize, Hash, Eq, PartialOrd)]
 enum ApplicationState {
@@ -62,6 +62,11 @@ impl ClusterState {
     pub fn new() -> ClusterState {
         ClusterState{nodes:Vec::new()}
     }
+
+    pub fn handle(&mut self, message: Message) -> Message {
+        Message::ReceivedOK
+    }
+
     fn update(&mut self, node: Uuid, state: NodeState) -> GossipResult<()> {
         Err(GossipError::OldState)
     }
