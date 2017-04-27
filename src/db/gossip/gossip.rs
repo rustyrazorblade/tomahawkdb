@@ -85,7 +85,7 @@ pub struct GossipService {
 }
 
 impl GossipService {
-    fn new(port: usize)  {
+    pub fn new(port: usize)  {
         let addr = "0.0.0.0:12345".parse().unwrap();
 
         let server = TcpServer::new(GossipProto, addr);

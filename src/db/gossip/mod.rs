@@ -3,6 +3,7 @@ pub mod messages;
 pub mod state;
 
 use self::state::{ClusterState, NodeState};
+pub use self::gossip::GossipService;
 
 mod tests;
 
