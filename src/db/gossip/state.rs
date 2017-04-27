@@ -66,8 +66,7 @@ impl ClusterState {
     pub fn handle(&mut self, message: Message) -> Message {
         match message {
             Message::Join(uuid, addr, port) => {
-                self.handle_join(uuid, addr, port);
-                Message::ReceivedOK
+                self.handle_join(uuid, addr, port)
             },
             _ => Message::ReceivedOK
         }
