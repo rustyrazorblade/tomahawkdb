@@ -64,11 +64,27 @@ impl ClusterState {
     }
 
     pub fn handle(&mut self, message: Message) -> Message {
+        match message {
+            Message::Join(uuid, addr, port) => {
+                self.handle_join(uuid, addr, port);
+                Message::ReceivedOK
+            },
+            _ => Message::ReceivedOK
+        }
+    }
+
+    pub fn handle_join(&mut self, uuid: Uuid, addr: String, port: usize) -> Message {
+        let node = NodeState::new(addr.parse().unwrap(), port);
+        self.nodes.push(node);
         Message::ReceivedOK
     }
 
     fn update(&mut self, node: Uuid, state: NodeState) -> GossipResult<()> {
         Err(GossipError::OldState)
+    }
+
+    pub fn node_count(&self) -> usize {
+        self.nodes.len()
     }
 
 }

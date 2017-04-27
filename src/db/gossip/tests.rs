@@ -20,10 +20,13 @@ fn ping_pong_channel() {
 #[test]
 fn add_node() {
     let mut state = ClusterState::new();
+    assert_eq!(state.node_count(), 0);
     let msg = Message::Join(Uuid::new_v4(),
                             String::from("127.0.0.1"),
                             8375);
     let result = state.handle(msg);
+    assert_eq!(state.node_count(), 1);
+
 }
 
 
