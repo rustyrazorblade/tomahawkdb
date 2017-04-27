@@ -1,5 +1,6 @@
 //use super::GossipManager;
 use super::ClusterState;
+use super::GossipService;
 /*
 lets be sure the cluster manager works
 
@@ -15,6 +16,8 @@ fn start_and_stop_gossip() {
 fn ping_pong_channel() {}
 
 #[test]
-fn add_node() {}
+fn add_node() {
+    GossipService::new_async(48475);
+}
 
 

@@ -96,6 +96,10 @@ impl GossipService {
                 state: RwLock::new(ClusterState::new())
             }));
     }
+    // starts a new gossip server on a thread
+    pub fn new_async(port: usize) -> thread::JoinHandle<()> {
+        thread::spawn(move|| GossipService::new(port))
+    }
 }
 
 impl Service for GossipService {
