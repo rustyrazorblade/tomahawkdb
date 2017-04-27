@@ -59,7 +59,7 @@ pub struct ClusterState {
 }
 
 impl ClusterState {
-    fn new() -> ClusterState {
+    pub fn new() -> ClusterState {
         ClusterState{nodes:Vec::new()}
     }
     fn update(&mut self, node: Uuid, state: NodeState) -> GossipResult<()> {

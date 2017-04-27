@@ -9,7 +9,7 @@ use std::io;
 use std::io::Cursor; // used with byteorder
 use bytes::{BytesMut, BufMut}; // needed for tokio
 use std::sync::RwLock;
-
+use std::net::SocketAddr;
 
 // TOKIO
 use futures::{future, Future, BoxFuture, finished};
@@ -80,7 +80,21 @@ impl<T: AsyncRead + AsyncWrite + 'static> ServerProto<T> for GossipProto {
 }
 
 pub struct GossipService {
+    address: SocketAddr,
     state: RwLock<ClusterState>,
+}
+
+impl GossipService {
+    fn new(port: usize)  {
+        let addr = "0.0.0.0:12345".parse().unwrap();
+
+        let server = TcpServer::new(GossipProto, addr);
+        server.serve(move ||
+            Ok(GossipService{
+                address: addr,
+                state: RwLock::new(ClusterState::new())
+            }));
+    }
 }
 
 impl Service for GossipService {
@@ -91,6 +105,7 @@ impl Service for GossipService {
 
     fn call(&self, req: Self::Request) -> Self::Future {
         let tmp = self.state.write().unwrap();
+
         finished(Message::ReceivedOK).boxed()
     }
 
@@ -107,6 +122,5 @@ pub enum Message {
     // address
     GossipMessage(ClusterState),
 }
-
 
 
