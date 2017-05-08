@@ -55,12 +55,12 @@ impl NodeState {
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClusterState {
-    nodes: Vec<NodeState>,
+    nodes: HashMap<Uuid, NodeState>,
 }
 
 impl ClusterState {
     pub fn new() -> ClusterState {
-        ClusterState{nodes:Vec::new()}
+        ClusterState{nodes:HashMap::new()}
     }
 
     pub fn handle(&mut self, message: Message) -> Message {
@@ -74,7 +74,7 @@ impl ClusterState {
 
     pub fn handle_join(&mut self, uuid: Uuid, addr: String, port: usize) -> Message {
         let node = NodeState::new(addr.parse().unwrap(), port);
-        self.nodes.push(node);
+        self.nodes.insert(uuid, node);
         Message::ReceivedOK
     }
 
