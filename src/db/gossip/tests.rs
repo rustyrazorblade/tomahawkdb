@@ -15,6 +15,7 @@ fn start_and_stop_gossip() {
 #[test]
 fn ping_pong_channel() {
     GossipService::new_async(48475);
+    GossipService::new_async(48476);
 }
 
 #[test]
