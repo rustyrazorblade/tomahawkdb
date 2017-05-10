@@ -5,9 +5,9 @@ authors = ["Jon Haddad <jon@jonhaddad.com>"]
 
 [dependencies]
 tokio = "*"
-futures = "0.1"
-log = "0.3"
-env_logger = "0.3"
+futures = "*"
+log = "*"
+env_logger = "*"
 tokio-proto = "*"
 tokio-io = "*"
 tokio-service = "*"
@@ -16,5 +16,5 @@ serde = "*"
 serde_derive = "*"
 bincode = "*"
 byteorder = "1.0.0"
-bytes = "0.4"
-uuid = { version = "0.5", features = ["serde", "v4"] }
+bytes = "*"
+uuid = { version = "*", features = ["serde", "v4"] }
