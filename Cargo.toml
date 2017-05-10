@@ -12,9 +12,9 @@ tokio-proto = "*"
 tokio-io = "*"
 tokio-service = "*"
 clap="*"
-serde = "0.9"
-serde_derive = "0.9"
+serde = "*"
+serde_derive = "*"
 bincode = "*"
 byteorder = "1.0.0"
 bytes = "0.4"
-uuid = { version = "0.4", features = ["serde", "v4"] }
+uuid = { version = "0.5", features = ["serde", "v4"] }
