@@ -4,6 +4,7 @@ extern crate futures;
 extern crate tokio_io;
 extern crate tokio_proto;
 extern crate tokio_service;
+extern crate tokio_core;
 
 #[macro_use]
 extern crate serde_derive;

@@ -12,6 +12,7 @@ dependencies = [
  "serde 1.0.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_derive 1.0.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "tokio 0.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "tokio-core 0.1.7 (registry+https://github.com/rust-lang/crates.io-index)",
  "tokio-io 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "tokio-proto 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "tokio-service 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",

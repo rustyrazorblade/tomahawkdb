@@ -1,5 +1,6 @@
 pub mod codec;
 pub mod proto;
+pub mod client_pool;
 
 // Standard libs
 use std::sync::{Mutex, Arc};
