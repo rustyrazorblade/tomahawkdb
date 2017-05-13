@@ -1,4 +1,5 @@
 pub mod codec;
+pub mod proto;
 
 // Standard libs
 use std::sync::{Mutex, Arc};
@@ -25,37 +26,9 @@ use tokio_service::Service;
 use bincode::{serialize, deserialize, Infinite};
 use byteorder::{BigEndian, WriteBytesExt, ReadBytesExt};
 
-use self::codec::MessagingCodec;
+pub use self::codec::MessagingCodec;
+use self::proto::{MessagingClientProto, MessagingProto};
 
-
-#[derive(Debug)]
-pub struct MessagingProto;
-
-impl<T: AsyncRead + AsyncWrite + 'static> ServerProto<T> for MessagingProto {
-    type Request = Message;
-    type Response = Message;
-    type Transport = Framed<T, MessagingCodec>;
-    type BindTransport = Result<Self::Transport, io::Error>;
-
-    fn bind_transport(&self, io: T) -> Self::BindTransport {
-        Ok(io.framed(MessagingCodec))
-    }
-}
-
-
-#[derive(Debug)]
-pub struct MessagingClientProto;
-
-impl<T: AsyncRead + AsyncWrite + 'static> ClientProto<T> for MessagingClientProto {
-    type Request = Message;
-    type Response = Message;
-    type Transport = Framed<T, MessagingCodec>;
-    type BindTransport = Result<Self::Transport, io::Error>;
-
-    fn bind_transport(&self, io: T) -> Self::BindTransport {
-        Ok(io.framed(MessagingCodec))
-    }
-}
 
 
 pub struct MessagingService {
