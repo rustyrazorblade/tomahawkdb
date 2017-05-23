@@ -1,5 +1,4 @@
 pub mod gossip;
-pub mod messages;
 pub mod state;
 
 pub use self::state::{ClusterState, NodeState};

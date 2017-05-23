@@ -1,5 +1,6 @@
 pub mod codec;
 pub mod proto;
+pub mod client;
 pub mod client_pool;
 
 // Standard libs
@@ -29,6 +30,7 @@ use byteorder::{BigEndian, WriteBytesExt, ReadBytesExt};
 
 pub use self::codec::MessagingCodec;
 use self::proto::{MessagingClientProto, MessagingProto};
+use self::client::Client;
 
 
 
